@@ -1,0 +1,45 @@
+#include <queue>
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        // Min-heap to store the nodes (using a lambda to compare the values)
+        auto comp = [](ListNode* a, ListNode* b) {
+            return a->val > b->val;
+        };
+        
+        priority_queue<ListNode*, vector<ListNode*>, decltype(comp)> minHeap(comp);
+
+        // Initialize the heap with the head of each list
+        for (auto list : lists) {
+            if (list != nullptr) {
+                minHeap.push(list);
+            }
+        }
+
+        // Dummy node to simplify the merge process
+        ListNode* dummy = new ListNode();
+        ListNode* current = dummy;
+
+        // Process the heap until it's empty
+        while (!minHeap.empty()) {
+            // Get the smallest node from the heap
+            ListNode* node = minHeap.top();
+            minHeap.pop();
+            
+            // Add it to the merged list
+            current->next = node;
+            current = current->next;
+
+            // If there's a next node, push it into the heap
+            if (node->next != nullptr) {
+                minHeap.push(node->next);
+            }
+        }
+
+        // Return the merged linked list (skipping the dummy node)
+        return dummy->next;
+    }
+};
