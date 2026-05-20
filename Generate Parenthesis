@@ -1,0 +1,26 @@
+class Solution {
+public:
+    void backtrack(int open, int close, int n, string current, vector<string>& result) {
+        // Base case: if the current string has n opening and n closing parentheses, add to result
+        if (open == n && close == n) {
+            result.push_back(current);
+            return;
+        }
+        
+        // If we can still add an opening parenthesis, do it
+        if (open < n) {
+            backtrack(open + 1, close, n, current + "(", result);
+        }
+        
+        // If we can still add a closing parenthesis (i.e., close < open), do it
+        if (close < open) {
+            backtrack(open, close + 1, n, current + ")", result);
+        }
+    }
+
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        backtrack(0, 0, n, "", result);  // Start with 0 open and 0 close parentheses
+        return result;
+    }
+};
