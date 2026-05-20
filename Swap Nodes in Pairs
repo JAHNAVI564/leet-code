@@ -1,0 +1,27 @@
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        // Create a dummy node to simplify handling of the head node
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        
+        ListNode* prev = dummy;  // previous node starts at the dummy node
+        ListNode* current = head; // current node starts at the head
+        
+        while (current && current->next) {
+            ListNode* first = current;
+            ListNode* second = current->next;
+            
+            // Swap the pair
+            prev->next = second;    // Link previous node to second node
+            first->next = second->next; // Link first node to the node after the second
+            second->next = first;    // Link second node to first node
+            
+            // Move the prev and current pointers two steps forward
+            prev = first;
+            current = first->next;
+        }
+        
+        return dummy->next; // Return the new head (dummy->next points to the new head)
+    }
+};
