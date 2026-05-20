@@ -1,0 +1,66 @@
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        // Base case: if the list is empty or k is 1, no need to reverse
+        if (!head || k == 1) {
+            return head;
+        }
+
+        // First, count the total number of nodes in the list
+        ListNode* temp = head;
+        int length = 0;
+        while (temp) {
+            length++;
+            temp = temp->next;
+        }
+
+        // Dummy node to handle the head node reversal easily
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode* prevGroupEnd = dummy;
+        
+        // Reverse nodes in groups of k
+        while (length >= k) {
+            // The current group's first node
+            ListNode* groupStart = prevGroupEnd->next;
+            // The next group's first node
+            ListNode* groupEnd = groupStart;
+            for (int i = 1; i < k; i++) {
+                groupEnd = groupEnd->next;
+            }
+            // Store the node after the group
+            ListNode* nextGroupStart = groupEnd->next;
+            
+            // Reverse the current group
+            groupEnd->next = nullptr;  // Temporarily break the group
+            prevGroupEnd->next = reverseList(groupStart, k);
+            groupStart->next = nextGroupStart;  // Connect to the next group
+            
+            // Move prevGroupEnd to the end of the reversed group
+            prevGroupEnd = groupStart;
+            length -= k;  // Decrease the remaining nodes count
+        }
+        
+        return dummy->next;
+    }
+
+private:
+    ListNode* reverseList(ListNode* head, int k) {
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+        ListNode* next = nullptr;
+        int count = 0;
+
+        // Reverse k nodes
+        while (curr && count < k) {
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+            count++;
+        }
+
+        // Return the new head after reversing the k nodes
+        return prev;
+    }
+};
