@@ -1,0 +1,11 @@
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        # Negative numbers are not palindrome
+        if x < 0:
+            return False
+        
+        # Convert the integer to string and check if palindrome
+        s = str(x)
+        return s == s[::-1]
+
+        
