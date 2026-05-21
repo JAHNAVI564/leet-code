@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> anagramGroups;
+
+        for (const string& s : strs) {
+            string sortedStr = s;
+            sort(sortedStr.begin(), sortedStr.end());  // Sort characters
+            anagramGroups[sortedStr].push_back(s);     // Group by sorted key
+        }
+
+        vector<vector<string>> result;
+        for (auto& pair : anagramGroups) {
+            result.push_back(pair.second);
+        }
+
+        return result;
+    }
+};
