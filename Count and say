@@ -1,0 +1,33 @@
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    string countAndSay(int n) {
+        string result = "1";  // base case for n=1
+
+        for (int i = 2; i <= n; ++i) {
+            result = getNext(result);
+        }
+
+        return result;
+    }
+
+private:
+    string getNext(const string& s) {
+        string next;
+        int count = 1;
+
+        for (int i = 1; i <= (int)s.size(); ++i) {
+            // If current char is same as previous, increment count
+            if (i < (int)s.size() && s[i] == s[i - 1]) {
+                count++;
+            } else {
+                // Otherwise append count and the character to next string
+                next += to_string(count) + s[i - 1];
+                count = 1;  // reset count
+            }
+        }
+        return next;
+    }
+};
