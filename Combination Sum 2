@@ -1,0 +1,35 @@
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> results;
+        vector<int> combination;
+        sort(candidates.begin(), candidates.end());
+        backtrack(candidates, target, 0, combination, results);
+        return results;
+    }
+
+private:
+    void backtrack(const vector<int>& candidates, int target, int start,
+                   vector<int>& combination, vector<vector<int>>& results) {
+        if (target == 0) {
+            results.push_back(combination);
+            return;
+        }
+        for (int i = start; i < (int)candidates.size(); ++i) {
+            // If the candidate is greater than the remaining target, stop exploring this path
+            if (candidates[i] > target) break;
+
+            // Skip duplicates: if this candidate is the same as the one before and we didn't use
+            // the previous one in this recursion level, skip it
+            if (i > start && candidates[i] == candidates[i - 1]) continue;
+
+            combination.push_back(candidates[i]);
+            backtrack(candidates, target - candidates[i], i + 1, combination, results); // i+1 because each element can be used once
+            combination.pop_back();
+        }
+    }
+};
