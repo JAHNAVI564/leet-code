@@ -1,0 +1,28 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        string result = "";  // This will store the final binary sum
+        int i = a.size() - 1;  // Start from the last character of string a
+        int j = b.size() - 1;  // Start from the last character of string b
+        int carry = 0;  // Carry to store overflow (either 0 or 1)
+
+        // Continue until both strings are processed, and there's no carry left
+        while (i >= 0 || j >= 0 || carry) {
+            int sum = carry;  // Start with the carry from the previous step
+
+            // Add bit from string a if it's still available
+            if (i >= 0) sum += a[i--] - '0';
+
+            // Add bit from string b if it's still available
+            if (j >= 0) sum += b[j--] - '0';
+
+            // Append the binary result (sum % 2 gives the current bit)
+            result = to_string(sum % 2) + result;
+
+            // Update the carry (sum >= 2 means carry = 1, else carry = 0)
+            carry = sum / 2;
+        }
+
+        return result;  // Return the final binary string
+    }
+};
