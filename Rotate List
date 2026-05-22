@@ -1,0 +1,34 @@
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (!head || !head->next) return head;  // Edge case: Empty list or single node
+        
+        // Step 1: Find the length of the list
+        ListNode* current = head;
+        int length = 1;
+        while (current->next) {
+            current = current->next;
+            length++;
+        }
+        
+        // Step 2: Normalize k to avoid unnecessary rotations
+        k = k % length;
+        if (k == 0) return head;  // No rotation needed
+        
+        // Step 3: Make the list circular
+        current->next = head;
+        
+        // Step 4: Find the new tail and new head
+        int stepsToNewTail = length - k;
+        ListNode* newTail = head;
+        for (int i = 1; i < stepsToNewTail; i++) {
+            newTail = newTail->next;
+        }
+        
+        // Step 5: Set the new head and break the circular list
+        ListNode* newHead = newTail->next;
+        newTail->next = nullptr;
+        
+        return newHead;
+    }
+};
