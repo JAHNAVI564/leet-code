@@ -1,0 +1,42 @@
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode* x = nullptr;
+        TreeNode* y = nullptr;
+        TreeNode* pred = nullptr; // previous node in inorder
+        TreeNode* predecessor = nullptr;
+
+        while (root != nullptr) {
+            if (root->left != nullptr) {
+                // Find the inorder predecessor
+                predecessor = root->left;
+                while (predecessor->right != nullptr && predecessor->right != root) {
+                    predecessor = predecessor->right;
+                }
+
+                if (predecessor->right == nullptr) {
+                    predecessor->right = root;
+                    root = root->left;
+                } else {
+                    if (pred != nullptr && root->val < pred->val) {
+                        y = root;
+                        if (x == nullptr) x = pred;
+                    }
+                    pred = root;
+
+                    predecessor->right = nullptr;
+                    root = root->right;
+                }
+            } else {
+                if (pred != nullptr && root->val < pred->val) {
+                    y = root;
+                    if (x == nullptr) x = pred;
+                }
+                pred = root;
+                root = root->right;
+            }
+        }
+
+        if (x && y) swap(x->val, y->val);
+    }
+};
