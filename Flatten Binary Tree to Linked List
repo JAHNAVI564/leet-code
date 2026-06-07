@@ -1,0 +1,15 @@
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        self.prev = None  # Keep track of previously visited node
+        
+        def helper(node):
+            if not node:
+                return
+            helper(node.right)
+            helper(node.left)
+            
+            node.right = self.prev
+            node.left = None
+            self.prev = node
+        
+        helper(root)
