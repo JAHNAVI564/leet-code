@@ -1,0 +1,41 @@
+from typing import List, Optional
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        if not preorder or not inorder:
+            return None
+
+        # Map each value to its index in inorder for O(1) lookups
+        inorder_index_map = {value: index for index, value in enumerate(inorder)}
+
+        # Use a pointer to track the current root in preorder list
+        self.preorder_index = 0
+
+        def build(left: int, right: int) -> Optional[TreeNode]:
+            if left > right:
+                return None
+
+            # Get current root value from preorder
+            root_val = preorder[self.preorder_index]
+            self.preorder_index += 1
+
+            # Create the root node
+            root = TreeNode(root_val)
+
+            # Get the index of this root in inorder
+            index = inorder_index_map[root_val]
+
+            # Build left and right subtrees recursively
+            root.left = build(left, index - 1)
+            root.right = build(index + 1, right)
+
+            return root
+
+        return build(0, len(inorder) - 1)
