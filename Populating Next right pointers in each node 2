@@ -1,0 +1,21 @@
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+        if not root:
+            return None
+
+        curr = root  # current node at the current level
+
+        while curr:
+            dummy = Node(0)  # dummy head for the next level
+            prev = dummy     # the latest node added to the next level
+            while curr:
+                if curr.left:
+                    prev.next = curr.left
+                    prev = prev.next
+                if curr.right:
+                    prev.next = curr.right
+                    prev = prev.next
+                curr = curr.next  # move in current level
+            curr = dummy.next  # move to next level
+
+        return root
